@@ -2,7 +2,7 @@
 {
     public class Ship
     {
-        public int Length { get; set; }
+        public int Length { get; }
 
         public Ship(int length)
         {

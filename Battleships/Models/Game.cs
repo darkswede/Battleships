@@ -13,7 +13,6 @@
 
         public void PlayTurn(Coordinates coordinates)
         {
-            Player.ManualShot(coordinates);
             var shotResult = NPCPlayer.ProcessShot(coordinates);
             Player.ProcessShotResult(shotResult);
 

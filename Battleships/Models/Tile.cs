@@ -3,9 +3,9 @@
     public class Tile
     {
         public Coordinates Coordinates { get; }
-        public bool IsOccupied { get; set; }
-        public bool Hit { get; protected set; }
-        public bool Miss { get; protected set; }
+        public bool IsOccupied { get; }
+        public bool Hit { get; private set; }
+        public bool Miss { get; private set; }
 
         public Tile(int column, int row)
         {
