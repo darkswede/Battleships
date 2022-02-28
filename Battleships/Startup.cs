@@ -1,3 +1,4 @@
+using Battleships.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ namespace Battleships
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IGameService, GameService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

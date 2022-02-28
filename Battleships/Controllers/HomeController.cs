@@ -1,11 +1,17 @@
 ﻿using Battleships.Models;
+using Battleships.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Battleships.Controllers
 {
     public class HomeController : Controller
     {
-        public Game Game { get; set; } = new Game();
+        public IGameService _gameService;
+
+        public HomeController(IGameService gameService)
+        {
+            _gameService = gameService;
+        }
 
         public IActionResult Index()
         {
@@ -21,7 +27,8 @@ namespace Battleships.Controllers
         [HttpPost]
         public IActionResult RunGame(Coordinates coordinates)
         {
-            Game.PlayTurn(coordinates);
+            var game = _gameService.GetOrCreateGame();
+            game.PlayTurn(coordinates);
 
             return RedirectToAction(nameof(RunGame));
         }
