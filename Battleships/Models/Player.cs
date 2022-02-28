@@ -29,23 +29,74 @@ namespace Battleships.Models
             EnemyBoard = new Board();
             IsAlive = true;
         }
-        //Coordinates
-        public void  Fire()
+
+        public Coordinates ManualShot(Coordinates coordinates)
         {
+
+        }
+
+        public Coordinates Fire()
+        {
+            Coordinates shotAt;
             var possibleHitsNextToKnownHit = SearchForNotDestroyedShipPart();
             if (possibleHitsNextToKnownHit.Any())
             {
-                ShotNextToKnownHit(possibleHitsNextToKnownHit);
+                shotAt = ShotNextToKnownHit(possibleHitsNextToKnownHit);
             }
             else
             {
-                Shot();
+                shotAt = Shot();
+            }
+
+            return shotAt;
+        }
+
+        public Tile ProcessShot(Coordinates coordinates)
+        {
+            var tile = PlayerBoard.BoardOfTiles
+                .Where(x => x.Coordinates.Column == coordinates.Column && x.Coordinates.Row == coordinates.Row)
+                .First();
+            var isOccupied = tile.IsOccupied;
+
+            if (isOccupied)
+            {
+                tile.ChangeToHit();
+                DeductHP();
+            }
+            else if (!isOccupied)
+            {
+                tile.ChangeToMiss();
+            }
+
+            return tile;
+        }
+
+        public void ProcessShotResult(Tile tile)
+        {
+            var enemyTile = EnemyBoard.BoardOfTiles
+                .Where(x => x.Coordinates.Column == tile.Coordinates.Column && x.Coordinates.Row == tile.Coordinates.Row)
+                .First();
+
+            if (tile.Hit)
+            {
+                enemyTile.ChangeToHit();
+            }
+            else if (tile.Miss)
+            {
+                enemyTile.ChangeToMiss();
             }
         }
 
-        public void PlayerLose()
+        private static int SetHP(IEnumerable<Ship> ships)
         {
-            IsAlive = false;
+            var hp = 0;
+            var length = ships.Select(x => x.Length);
+            foreach (var shipLength in length)
+            {
+                hp += shipLength;
+            }
+
+            return hp;
         }
 
         private List<Coordinates> SearchForNotDestroyedShipPart()
@@ -112,16 +163,13 @@ namespace Battleships.Models
             return targets[shotAt];
         }
 
-        private static int SetHP(IEnumerable<Ship> ships)
+        private void DeductHP()
         {
-            var hp = 0;
-            var length = ships.Select(x => x.Length);
-            foreach (var shipLength in length)
+            HP--;
+            if (HP == 0)
             {
-                hp += shipLength;
+                IsAlive = false;
             }
-
-            return hp;
         }
     }
 }
