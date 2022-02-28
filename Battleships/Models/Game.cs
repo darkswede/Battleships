@@ -13,26 +13,36 @@ namespace Battleships.Models
             NPCPlayer = new Player("PC");
         }
 
-        public void RunGame()
+        //public void RunGame()
+        //{
+        //    while (Player.IsAlive == true && NPCPlayer.IsAlive == true)
+        //    {
+        //        Player.ManualShot(coordinates);
+        //        PlayTurn(coordinates);
+        //    }
+
+        //    if (Player.IsAlive == false)
+        //    {
+        //        Console.WriteLine($"{NPCPlayer.Name} won the game.");
+        //    }
+        //    else if (NPCPlayer.IsAlive == false)
+        //    {
+        //        Console.WriteLine($"{Player.Name} won the game.");
+        //    }
+        //}
+
+        public void PlayTurn(Coordinates coordinates)
         {
-            while (Player.IsAlive == true && NPCPlayer.IsAlive == true)
-            {
-                PlayTurn();
-            }
+            Player.ManualShot(coordinates);
+            var shotResult = NPCPlayer.ProcessShot(coordinates);
+            Player.ProcessShotResult(shotResult);
 
-            if (Player.IsAlive == false)
+            if (NPCPlayer.IsAlive)
             {
-                Console.WriteLine($"{NPCPlayer.Name} won the game.");
+                var shotAt = NPCPlayer.Fire();
+                shotResult = Player.ProcessShot(shotAt);
+                NPCPlayer.ProcessShotResult(shotResult);
             }
-            else if (NPCPlayer.IsAlive == false)
-            {
-                Console.WriteLine($"{Player.Name} won the game.");
-            }
-        }
-
-        private void PlayTurn()
-        {
-
         }
     }
 }
