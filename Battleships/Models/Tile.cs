@@ -3,7 +3,7 @@
     public class Tile
     {
         public Coordinates Coordinates { get; }
-        public bool IsOccupied { get; }
+        public bool IsOccupied { get; set; }
         public bool Hit { get; private set; }
         public bool Miss { get; private set; }
 
