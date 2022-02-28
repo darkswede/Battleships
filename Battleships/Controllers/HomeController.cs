@@ -23,7 +23,7 @@ namespace Battleships.Controllers
         {
             Game.PlayTurn(coordinates);
 
-            return RedirectToAction("RunGame");
+            return RedirectToAction(nameof(RunGame));
         }
     }
 }
