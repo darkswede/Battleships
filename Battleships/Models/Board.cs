@@ -6,7 +6,7 @@ namespace Battleships.Models
 {
     public class Board
     {
-        public List<Tile> BoardOfTiles { get; protected set; }
+        public List<Tile> BoardOfTiles { get; private set; }
 
         public Board()
         {
